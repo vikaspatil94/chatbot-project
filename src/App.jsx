@@ -69,14 +69,18 @@ function App() {
   ])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
-  const [apiKey, setApiKey] = useState(() =>
-    localStorage.getItem('OPENAI_API_KEY') || (import.meta.env && import.meta.env.VITE_OPENAI_API_KEY) || ''
-  )
+  const apiKey = import.meta.env.VITE_OPENAI_API_KEY
 
-  function handleApiKeyChange(e) {
-    const k = e.target.value
-    setApiKey(k)
-    localStorage.setItem('OPENAI_API_KEY', k)
+  if (!apiKey) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-zinc-900 text-white">
+        <div className="text-center p-6 max-w-md">
+          <h2 className="text-xl font-semibold mb-4">Configuration Error</h2>
+          <p>Please set up the VITE_OPENAI_API_KEY environment variable.</p>
+          <p className="text-sm text-zinc-400 mt-2">If you're the developer, check your .env.local file.</p>
+        </div>
+      </div>
+    )
   }
 
   function handleClear() {
@@ -87,11 +91,6 @@ function App() {
     e.preventDefault()
     const text = input.trim()
     if (!text || loading) return
-
-    if (!apiKey) {
-      setMessages(prev => [...prev, { role: 'assistant', content: 'Please add your OpenAI API key in the header first.' }])
-      return
-    }
 
     const newMessages = [...messages, { role: 'user', content: text }]
     setMessages(newMessages)
@@ -124,16 +123,12 @@ function App() {
             <div className="h-7 w-7 rounded-md bg-brand-500 text-white grid place-items-center font-semibold">F</div>
             <h1 className="text-lg font-semibold">Fintech</h1>
           </div>
-          <div className="flex items-center gap-2">
-            <input
-              type="password"
-              value={apiKey}
-              onChange={handleApiKeyChange}
-              placeholder="sk-..."
-              className="w-[320px] rounded-md border border-zinc-700 bg-zinc-900 px-3 py-1.5 text-sm text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
-            />
-            <button onClick={handleClear} className="px-3 py-1.5 text-sm rounded-md border border-zinc-700 text-zinc-200 hover:bg-zinc-800">Clear</button>
-          </div>
+          <button 
+            onClick={handleClear} 
+            className="px-3 py-1.5 text-sm rounded-md border border-zinc-700 text-zinc-200 hover:bg-zinc-800"
+          >
+            Clear Chat
+          </button>
         </div>
       </header>
 
