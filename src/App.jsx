@@ -69,15 +69,17 @@ function App() {
   ])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
-  const apiKey = import.meta.env.VITE_OPENAI_API_KEY
+  const apiKey = import.meta.env.VITE_OPENAI_API_KEY || process.env.VITE_OPENAI_API_KEY
 
   if (!apiKey) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-zinc-900 text-white">
         <div className="text-center p-6 max-w-md">
           <h2 className="text-xl font-semibold mb-4">Configuration Error</h2>
-          <p>Please set up the VITE_OPENAI_API_KEY environment variable.</p>
-          <p className="text-sm text-zinc-400 mt-2">If you're the developer, check your .env.local file.</p>
+          <p>Please set up the VITE_OPENAI_API_KEY environment variable in your hosting provider's settings.</p>
+          <p className="text-sm text-zinc-400 mt-2">
+            If you're the developer, check your hosting provider's environment variables configuration.
+          </p>
         </div>
       </div>
     )
