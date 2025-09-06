@@ -6,7 +6,7 @@ A simple financial services chatbot built with React and Tailwind CSS.
 
 - Chat interface for financial queries
 - Dark mode UI
-- Responsive design
+- User friendly
 
 ## Setup
 
